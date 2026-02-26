@@ -27,51 +27,76 @@
     const stockData = {
       "Figma (FIG)": {
         ticker: "FIG", ipoDate: "Jul 31, 2025", ipoPrice: "$33.00", day1Close: "$115.50",
-        referencePrice: 115.50, peakFirstYear: "$142.92", currentPrice: "~$31",
-        year1Return: "-73%", revenueGrowthAtIPO: "41%", type: "IPO", color: "#FF4F00",
-        monthly: [100, 58.9, 47.6, 40.7, 32.9, 27.7, 17.2, 26.8],
+        referencePrice: 115.50, peakFirstYear: "$142.92", currentPrice: "$31.24",
+        year1Return: "-73%", revenueGrowthAtIPO: "46%", type: "IPO", color: "#FF4F00",
+        // Day 1=Jul 31 2025; M1=Aug end (~$95); M2=Sep (~$57.5); M3=Oct (~$51.5);
+        // M4=Nov (~$41.5); M5=Dec (~$35.7); M6=Jan end (~$22.5); M7=Feb 26 ($31.24)
+        monthly: [100, 82.3, 49.8, 44.6, 35.9, 30.9, 19.5, 27.0],
       },
       "Facebook (META)": {
         ticker: "FB", ipoDate: "May 18, 2012", ipoPrice: "$38.00", day1Close: "$38.23",
         referencePrice: 38.23, peakFirstYear: "$45.00",
-        year1Return: "-30%", revenueGrowthAtIPO: "32%", type: "IPO", color: "#1877F2",
-        monthly: [100, 84.2, 72.5, 65.3, 47.1, 50.4, 53.0, 55.8, 58.9, 62.0, 66.5, 70.3, 70.7],
+        year1Return: "-32%", revenueGrowthAtIPO: "32%", type: "IPO", color: "#1877F2",
+        // Day 1=May 18 2012; M1=May 31 ($27.72); M2=Jun ($29.06); M3=Jul ($21.71);
+        // M4=Aug ($19.05); M5=Sep ($17.73 low); M6=Oct ($19.14); M7=Nov ($22.10);
+        // M8=Dec ($26.44); M9=Jan 2013 ($31.54); M10=Feb ($27.25); M11=Mar ($25.58); M12=Apr ($26.85)
+        monthly: [100, 72.5, 76.0, 56.8, 49.8, 46.4, 50.1, 57.8, 69.2, 82.5, 71.3, 66.9, 70.2],
       },
       "Slack (WORK)": {
         ticker: "WORK", ipoDate: "Jun 20, 2019", ipoPrice: "$26.00 (ref)", day1Close: "$38.62",
         referencePrice: 38.62, peakFirstYear: "$42.00",
-        year1Return: "-18%", revenueGrowthAtIPO: "67%", type: "Direct Listing", color: "#611F69",
-        monthly: [100, 83.1, 74.4, 66.7, 65.1, 59.7, 56.9, 59.1, 62.3, 67.8, 73.2, 79.0, 82.1],
+        year1Return: "-22%", revenueGrowthAtIPO: "67%", type: "Direct Listing", color: "#611F69",
+        // Day 1=Jun 20 2019; M1=Jul ($32); M2=Aug ($29); M3=Sep ($25); M4=Oct ($21);
+        // M5=Nov ($20); M6=Dec ($22); M7=Jan 2020 ($21); M8=Feb ($25); M9=Mar ($28);
+        // M10=Apr ($31); M11=May ($31); M12=Jun 19 ($30)
+        monthly: [100, 82.8, 75.1, 64.7, 54.4, 51.8, 57.0, 54.4, 64.7, 72.5, 80.3, 80.3, 77.7],
       },
       "Spotify (SPOT)": {
-        ticker: "SPOT", ipoDate: "Apr 3, 2018", ipoPrice: "$132.50 (ref)", day1Close: "$149.01",
-        referencePrice: 149.01, peakFirstYear: "$198.99",
-        year1Return: "-8%", revenueGrowthAtIPO: "39%", type: "Direct Listing", color: "#1DB954",
-        monthly: [100, 113.4, 118.8, 123.5, 120.1, 113.4, 99.3, 94.6, 88.6, 91.2, 94.6, 90.3, 92.0],
+        ticker: "SPOT", ipoDate: "Apr 3, 2018", ipoPrice: "$132.00 (ref)", day1Close: "$149.01",
+        referencePrice: 149.01, peakFirstYear: "$193.00",
+        year1Return: "-1%", revenueGrowthAtIPO: "39%", type: "Direct Listing", color: "#1DB954",
+        // Day 1=Apr 3 2018; M1=May ($163); M2=Jun ($180); M3=Jul ($190); M4=Aug ($193 ATH);
+        // M5=Sep ($170); M6=Oct ($144); M7=Nov ($131); M8=Dec ($109); M9=Jan 2019 ($128);
+        // M10=Feb ($141); M11=Mar ($145); M12=Apr 3 ($148)
+        monthly: [100, 109.4, 120.8, 127.5, 129.5, 114.1, 96.6, 87.9, 73.2, 85.9, 94.6, 97.3, 99.3],
       },
       "Twitter (TWTR)": {
         ticker: "TWTR", ipoDate: "Nov 7, 2013", ipoPrice: "$26.00", day1Close: "$44.90",
-        referencePrice: 44.90, peakFirstYear: "$74.73",
-        year1Return: "+2%", revenueGrowthAtIPO: "110%", type: "IPO", color: "#1DA1F2",
-        monthly: [100, 119.2, 143.9, 131.4, 113.6, 97.1, 93.5, 88.0, 96.4, 98.2, 103.6, 107.8, 102.2],
+        referencePrice: 44.90, peakFirstYear: "$73.31",
+        year1Return: "-18%", revenueGrowthAtIPO: "110%", type: "IPO", color: "#1DA1F2",
+        // Day 1=Nov 7 2013; M1=Nov 29 (~$45); M2=Dec ($63.65; intra-month ATH $73.31 Dec 26);
+        // M3=Jan 2014 ($54.35); M4=Feb ($55.77); M5=Mar ($47.75); M6=Apr ($42.62);
+        // M7=May ($31.85); M8=Jun ($35.10); M9=Jul ($38.33); M10=Aug ($44.98);
+        // M11=Sep ($50.06); M12=Nov 7 2014 ($37.00)
+        monthly: [100, 100.2, 141.8, 121.1, 124.2, 106.3, 94.9, 70.9, 78.2, 85.4, 100.2, 111.5, 82.4],
       },
       "Duolingo (DUOL)": {
         ticker: "DUOL", ipoDate: "Jul 28, 2021", ipoPrice: "$102.00", day1Close: "$139.01",
-        referencePrice: 139.01, peakFirstYear: "$204.99",
-        year1Return: "-56%", revenueGrowthAtIPO: "47%", type: "IPO", color: "#58CC02",
-        monthly: [100, 109.4, 120.1, 137.4, 147.5, 139.6, 120.9, 89.9, 78.4, 66.9, 55.4, 48.6, 43.5],
+        referencePrice: 139.01, peakFirstYear: "$210.00",
+        year1Return: "-32%", revenueGrowthAtIPO: "47%", type: "IPO", color: "#58CC02",
+        // Day 1=Jul 28 2021; M1=Aug ($150); M2=Sep ($160); M3=Oct ($210 ATH);
+        // M4=Nov ($185); M5=Dec ($162); M6=Jan 2022 ($120); M7=Feb ($110); M8=Mar ($108);
+        // M9=Apr ($85); M10=May ($75; ATL $60.50 May 11); M11=Jun ($80); M12=Jul 2022 ($95)
+        monthly: [100, 107.9, 115.1, 151.1, 133.1, 116.5, 86.3, 79.1, 77.7, 61.2, 53.9, 57.6, 68.3],
       },
       "Robinhood (HOOD)": {
         ticker: "HOOD", ipoDate: "Jul 29, 2021", ipoPrice: "$38.00", day1Close: "$34.82",
         referencePrice: 34.82, peakFirstYear: "$85.00",
-        year1Return: "-77%", revenueGrowthAtIPO: "309%", type: "IPO", color: "#00C805",
-        monthly: [100, 211.3, 132.5, 113.6, 95.4, 84.3, 54.6, 43.5, 38.2, 33.9, 29.3, 24.0, 22.9],
+        year1Return: "-74%", revenueGrowthAtIPO: "309%", type: "IPO", color: "#00C805",
+        // Day 1=Jul 29 2021; M1=Aug 27 ($46.87; meme ATH close Aug 4 $70.39, intra $85);
+        // M2=Sep ($38); M3=Oct ($36); M4=Nov ($25); M5=Dec ($17); M6=Jan 2022 ($14);
+        // M7=Feb ($13); M8=Mar ($12); M9=Apr ($11); M10=May ($9); M11=Jun ($8; ATL $6.81 Jun 16);
+        // M12=Jul 2022 ($9)
+        monthly: [100, 134.6, 109.1, 103.4, 71.8, 48.8, 40.2, 37.3, 34.5, 31.6, 25.8, 23.0, 25.8],
       },
       "Instacart (CART)": {
         ticker: "CART", ipoDate: "Sep 19, 2023", ipoPrice: "$30.00", day1Close: "$33.70",
-        referencePrice: 33.70, peakFirstYear: "$43.00",
-        year1Return: "-16%", revenueGrowthAtIPO: "15%", type: "IPO", color: "#FF6B35",
-        monthly: [100, 74.2, 77.2, 71.2, 74.2, 83.1, 89.0, 95.0, 97.9, 94.9, 86.1, 83.1, 83.1],
+        referencePrice: 33.70, peakFirstYear: "$38.00",
+        year1Return: "+7%", revenueGrowthAtIPO: "15%", type: "IPO", color: "#FF6B35",
+        // Day 1=Sep 19 2023; M1=Sep 29 (~$29.89); M2=Oct (~$25); M3=Nov (~$25); M4=Dec (~$26);
+        // M5=Jan 2024 (~$24; ATL $22.13 Jan 5); M6=Feb (~$27); M7=Mar (~$30); M8=Apr (~$31);
+        // M9=May (~$33); M10=Jun (~$32); M11=Jul (~$34); M12=Sep 19 2024 (~$36)
+        monthly: [100, 88.7, 74.2, 74.2, 77.2, 71.2, 80.1, 89.0, 92.0, 97.9, 95.0, 100.9, 106.8],
       },
     };
 
@@ -211,7 +236,7 @@
                       <XAxis dataKey="month" tick={{ fill: "#555", fontSize: 11 }}
                         axisLine={{ stroke: "rgba(255,255,255,0.06)" }} tickLine={false} />
                       <YAxis tick={{ fill: "#555", fontSize: 11 }} axisLine={false}
-                        tickLine={false} tickFormatter={(v) => `${v}%`} domain={[0, 220]} />
+                        tickLine={false} tickFormatter={(v) => `${v}%`} domain={[0, 170]} />
                       <Tooltip content={<CustomTooltip />} />
                       <ReferenceLine y={100} stroke="rgba(255,255,255,0.15)" strokeDasharray="6 4"
                         label={{ value: "IPO Day 1 Close", position: "right", fill: "#555", fontSize: 10 }} />
@@ -324,11 +349,11 @@
                 {[
                   {
                     title: "Figma's Decline Is Severe, But Not Unprecedented",
-                    body: "At -73% from day-one close (~7 months in), Figma's trajectory closely tracks Robinhood's first year (-77%). Facebook similarly lost ~53% before its recovery. The SaaS-wide selloff driven by AI disruption fears has amplified the decline beyond company-specific fundamentals.",
+                    body: "At -73% from day-one close (~7 months in), Figma's trajectory closely tracks Robinhood's first year (-74%). Facebook similarly lost ~54% at its trough before recovering. The SaaS-wide selloff driven by AI disruption fears has amplified the decline beyond company-specific fundamentals.",
                   },
                   {
                     title: "Strong Revenue ≠ Strong Stock Price (Near-Term)",
-                    body: "Figma's 41% revenue growth at IPO is competitive with the peer set. Facebook (32%), Spotify (39%), and Duolingo (47%) all had comparable growth but still suffered significant first-year declines. Revenue growth tends to matter more in years 2-5.",
+                    body: "Figma's 46% revenue growth at IPO is competitive with the peer set. Facebook (32%), Spotify (39%), and Duolingo (47%) all had comparable growth but still suffered significant first-year declines. Revenue growth tends to matter more in years 2-5.",
                   },
                   {
                     title: "IPO Pop-to-Trough Pattern Repeats",
@@ -336,7 +361,7 @@
                   },
                   {
                     title: "Recovery Timelines Vary Dramatically",
-                    body: "Facebook took 16 months to recover its IPO price and went on to 10x+. Robinhood took 3+ years but eventually rallied 400% in 2024. Slack never recovered (acquired by Salesforce at $45). Instacart has traded in a narrow range near IPO price. The playbook isn't uniform.",
+                    body: "Facebook took 16 months to recover its IPO price and went on to 10x+. Robinhood took 3+ years but eventually rallied 400% in 2024. Slack never recovered (acquired by Salesforce at ~$27.70/share cash). Instacart ended year 1 up ~+7% from day-one close. The playbook isn't uniform.",
                   },
                 ].map((insight) => (
                   <div key={insight.title} style={{

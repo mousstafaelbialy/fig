@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Figma ($FIG) vs Historic Tech IPOs — First-Year Performance Benchmark</title>
+  <meta name="description" content="Interactive benchmark comparing Figma's post-IPO stock performance against Facebook, Slack, Spotify, Twitter, Duolingo, Robinhood, and Instacart." />
+  <meta property="og:title" content="Figma ($FIG) vs Historic Tech IPOs — First-Year Benchmark" />
+  <meta property="og:description" content="How does Figma's post-IPO trajectory compare to other major tech listings? Interactive chart and analysis." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0f; color: #e0e0e0; font-family: 'Inter', -apple-system, sans-serif; }
+    #root { min-height: 100vh; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+    const { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid } = Recharts;
+    const stockData = {
+      "Figma (FIG)": {
+        ticker: "FIG", ipoDate: "Jul 31, 2025", ipoPrice: "$33.00", day1Close: "$115.50",
+        referencePrice: 115.50, peakFirstYear: "$142.92", currentPrice: "~$31",
+        year1Return: "-73%", revenueGrowthAtIPO: "41%", type: "IPO", color: "#FF4F00",
+        monthly: [100, 58.9, 47.6, 40.7, 32.9, 27.7, 17.2, 26.8],
+      },
+      "Facebook (META)": {
+        ticker: "FB", ipoDate: "May 18, 2012", ipoPrice: "$38.00", day1Close: "$38.23",
+        referencePrice: 38.23, peakFirstYear: "$45.00",
+        year1Return: "-30%", revenueGrowthAtIPO: "32%", type: "IPO", color: "#1877F2",
+        monthly: [100, 84.2, 72.5, 65.3, 47.1, 50.4, 53.0, 55.8, 58.9, 62.0, 66.5, 70.3, 70.7],
+      },
+      "Slack (WORK)": {
+        ticker: "WORK", ipoDate: "Jun 20, 2019", ipoPrice: "$26.00 (ref)", day1Close: "$38.62",
+        referencePrice: 38.62, peakFirstYear: "$42.00",
+        year1Return: "-18%", revenueGrowthAtIPO: "67%", type: "Direct Listing", color: "#611F69",
+        monthly: [100, 83.1, 74.4, 66.7, 65.1, 59.7, 56.9, 59.1, 62.3, 67.8, 73.2, 79.0, 82.1],
+      },
+      "Spotify (SPOT)": {
+        ticker: "SPOT", ipoDate: "Apr 3, 2018", ipoPrice: "$132.50 (ref)", day1Close: "$149.01",
+        referencePrice: 149.01, peakFirstYear: "$198.99",
+        year1Return: "-8%", revenueGrowthAtIPO: "39%", type: "Direct Listing", color: "#1DB954",
+        monthly: [100, 113.4, 118.8, 123.5, 120.1, 113.4, 99.3, 94.6, 88.6, 91.2, 94.6, 90.3, 92.0],
+      },
+      "Twitter (TWTR)": {
+        ticker: "TWTR", ipoDate: "Nov 7, 2013", ipoPrice: "$26.00", day1Close: "$44.90",
+        referencePrice: 44.90, peakFirstYear: "$74.73",
+        year1Return: "+2%", revenueGrowthAtIPO: "110%", type: "IPO", color: "#1DA1F2",
+        monthly: [100, 119.2, 143.9, 131.4, 113.6, 97.1, 93.5, 88.0, 96.4, 98.2, 103.6, 107.8, 102.2],
+      },
+      "Duolingo (DUOL)": {
+        ticker: "DUOL", ipoDate: "Jul 28, 2021", ipoPrice: "$102.00", day1Close: "$139.01",
+        referencePrice: 139.01, peakFirstYear: "$204.99",
+        year1Return: "-56%", revenueGrowthAtIPO: "47%", type: "IPO", color: "#58CC02",
+        monthly: [100, 109.4, 120.1, 137.4, 147.5, 139.6, 120.9, 89.9, 78.4, 66.9, 55.4, 48.6, 43.5],
+      },
+      "Robinhood (HOOD)": {
+        ticker: "HOOD", ipoDate: "Jul 29, 2021", ipoPrice: "$38.00", day1Close: "$34.82",
+        referencePrice: 34.82, peakFirstYear: "$85.00",
+        year1Return: "-77%", revenueGrowthAtIPO: "309%", type: "IPO", color: "#00C805",
+        monthly: [100, 211.3, 132.5, 113.6, 95.4, 84.3, 54.6, 43.5, 38.2, 33.9, 29.3, 24.0, 22.9],
+      },
+      "Instacart (CART)": {
+        ticker: "CART", ipoDate: "Sep 19, 2023", ipoPrice: "$30.00", day1Close: "$33.70",
+        referencePrice: 33.70, peakFirstYear: "$43.00",
+        year1Return: "-16%", revenueGrowthAtIPO: "15%", type: "IPO", color: "#FF6B35",
+        monthly: [100, 74.2, 77.2, 71.2, 74.2, 83.1, 89.0, 95.0, 97.9, 94.9, 86.1, 83.1, 83.1],
+      },
+    };
+    const months = ["Day 1", "M1", "M2", "M3", "M4", "M5", "M6", "M7", "M8", "M9", "M10", "M11", "M12"];
+    function App() {
+      const [selectedStocks, setSelectedStocks] = useState(Object.keys(stockData));
+      const [hoveredRow, setHoveredRow] = useState(null);
+      const [view, setView] = useState("chart");
+      const chartData = useMemo(() => {
+        return months.map((month, i) => {
+          const point = { month };
+          Object.entries(stockData).forEach(([name, data]) => {
+            if (selectedStocks.includes(name) && data.monthly[i] !== undefined) {
+              point[name] = data.monthly[i];
+            }
+          });
+          return point;
+        });
+      }, [selectedStocks]);
+      const toggleStock = (name) => {
+        setSelectedStocks((prev) =>
+          prev.includes(name) ? prev.filter((s) => s !== name) : [...prev, name]
+        );
+      };
+      const figmaData = stockData["Figma (FIG)"];
+      const figmaMonths = figmaData.monthly.length - 1;
+      const CustomTooltip = ({ active, payload, label }) => {
+        if (!active || !payload?.length) return null;
+        return (
+          <div style={{
+            background: "rgba(15, 15, 20, 0.95)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 8,
+            padding: "12px 16px",
+            backdropFilter: "blur(10px)",
+            minWidth: 180,
+          }}>
+            <p style={{ color: "#999", fontSize: 11, marginBottom: 8, letterSpacing: 1 }}>{label}</p>
+            {payload
+              .sort((a, b) => (b.value || 0) - (a.value || 0))
+              .map((entry) => (
+                <div key={entry.name} style={{ display: "flex", justifyContent: "space-between", gap: 16, marginBottom: 4 }}>
+                  <span style={{ color: entry.color, fontSize: 13, fontWeight: 500 }}>
+                    {entry.name.split(" ")[0]}
+                  </span>
+                  <span style={{
+                    color: entry.value >= 100 ? "#4ade80" : "#f87171",
+                    fontSize: 13,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontWeight: 600,
+                  }}>
+                    {entry.value >= 100 ? "+" : ""}{(entry.value - 100).toFixed(1)}%
+                  </span>
+                </div>
+              ))}
+          </div>
+        );
+      };
+      return (
+        <div style={{
+          minHeight: "100vh",
+          background: "linear-gradient(145deg, #0a0a0f 0%, #0f1019 50%, #0a0a12 100%)",
+          color: "#e0e0e0",
+          fontFamily: "'Inter', -apple-system, sans-serif",
+          padding: "32px 24px",
+        }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+            <div style={{ marginBottom: 8 }}>
+              <span style={{
+                fontSize: 11, letterSpacing: 3, color: "#FF4F00",
+                textTransform: "uppercase", fontWeight: 600,
+              }}>
+                IPO Performance Benchmark
+              </span>
+            </div>
+            <h1 style={{
+              fontSize: 32, fontWeight: 700, color: "#fff",
+              margin: "0 0 6px 0", lineHeight: 1.2, letterSpacing: -0.5,
+            }}>
+              Figma ($FIG) vs. Historic Tech IPOs
+            </h1>
+            <p style={{ color: "#666", fontSize: 14, margin: "0 0 32px 0" }}>
+              First-year stock performance from day-one close, normalized to 100 &nbsp;|&nbsp; Figma: {figmaMonths} months since IPO ({figmaData.ipoDate})
+            </p>
+            {/* View Toggle */}
+            <div style={{ display: "flex", gap: 4, marginBottom: 24 }}>
+              {["chart", "table"].map((v) => (
+                <button key={v} onClick={() => setView(v)} style={{
+                  padding: "8px 20px", borderRadius: 6, border: "none",
+                  background: view === v ? "rgba(255,79,0,0.15)" : "rgba(255,255,255,0.04)",
+                  color: view === v ? "#FF4F00" : "#666",
+                  fontSize: 13, fontWeight: 600, cursor: "pointer", textTransform: "capitalize", transition: "all 0.2s",
+                }}>{v}</button>
+              ))}
+            </div>
+            {/* Stock Toggles */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 28 }}>
+              {Object.entries(stockData).map(([name, data]) => {
+                const active = selectedStocks.includes(name);
+                return (
+                  <button key={name} onClick={() => toggleStock(name)} style={{
+                    padding: "6px 14px", borderRadius: 20,
+                    border: `1.5px solid ${active ? data.color : "rgba(255,255,255,0.08)"}`,
+                    background: active ? `${data.color}18` : "transparent",
+                    color: active ? data.color : "#555",
+                    fontSize: 12, fontWeight: 600, cursor: "pointer", transition: "all 0.2s",
+                    display: "flex", alignItems: "center", gap: 6,
+                  }}>
+                    <span style={{
+                      width: 8, height: 8, borderRadius: "50%",
+                      background: active ? data.color : "#333", display: "inline-block",
+                    }} />
+                    {name.split(" ")[0]}
+                  </button>
+                );
+              })}
+            </div>
+            {view === "chart" && (
+              <>
+                <div style={{
+                  background: "rgba(255,255,255,0.02)", borderRadius: 12,
+                  border: "1px solid rgba(255,255,255,0.06)",
+                  padding: "24px 16px 16px 0", marginBottom: 32,
+                }}>
+                  <ResponsiveContainer width="100%" height={420}>
+                    <LineChart data={chartData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                      <XAxis dataKey="month" tick={{ fill: "#555", fontSize: 11 }}
+                        axisLine={{ stroke: "rgba(255,255,255,0.06)" }} tickLine={false} />
+                      <YAxis tick={{ fill: "#555", fontSize: 11 }} axisLine={false}
+                        tickLine={false} tickFormatter={(v) => `${v}%`} domain={[0, 220]} />
+                      <Tooltip content={<CustomTooltip />} />
+                      <ReferenceLine y={100} stroke="rgba(255,255,255,0.15)" strokeDasharray="6 4"
+                        label={{ value: "IPO Day 1 Close", position: "right", fill: "#555", fontSize: 10 }} />
+                      {Object.entries(stockData).map(([name, data]) =>
+                        selectedStocks.includes(name) ? (
+                          <Line key={name} type="monotone" dataKey={name} stroke={data.color}
+                            strokeWidth={name === "Figma (FIG)" ? 3 : 1.8} dot={false}
+                            opacity={name === "Figma (FIG)" ? 1 : 0.7} connectNulls={false} />
+                        ) : null
+                      )}
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+                {/* Figma Callout */}
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(255,79,0,0.06) 0%, rgba(255,79,0,0.02) 100%)",
+                  borderRadius: 12, border: "1px solid rgba(255,79,0,0.15)", padding: 24, marginBottom: 32,
+                }}>
+                  <div style={{ fontSize: 13, fontWeight: 600, color: "#FF4F00", marginBottom: 12, letterSpacing: 0.5 }}>
+                    FIGMA AT A GLANCE — {figmaMonths} MONTHS POST-IPO
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 20 }}>
+                    {[
+                      { label: "IPO Price", value: figmaData.ipoPrice },
+                      { label: "Day 1 Close", value: figmaData.day1Close },
+                      { label: "All-Time High", value: figmaData.peakFirstYear },
+                      { label: "Current (~7mo)", value: figmaData.currentPrice },
+                      { label: "From Day 1 Close", value: figmaData.year1Return },
+                      { label: "Rev Growth at IPO", value: figmaData.revenueGrowthAtIPO },
+                    ].map((item) => (
+                      <div key={item.label}>
+                        <div style={{ fontSize: 10, color: "#666", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}>
+                          {item.label}
+                        </div>
+                        <div style={{
+                          fontSize: 20, fontWeight: 700, fontFamily: "'JetBrains Mono', monospace",
+                          color: item.value.startsWith("-") ? "#f87171" : item.value.startsWith("+") ? "#4ade80" : "#fff",
+                        }}>{item.value}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+            {view === "table" && (
+              <div style={{
+                background: "rgba(255,255,255,0.02)", borderRadius: 12,
+                border: "1px solid rgba(255,255,255,0.06)", overflow: "auto", marginBottom: 32,
+              }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+                      {["Company", "IPO Date", "Type", "IPO Price", "Day 1 Close", "Peak Yr 1", "Yr 1 Return", "Rev Growth"].map((h) => (
+                        <th key={h} style={{
+                          padding: "14px 16px", textAlign: "left", color: "#555",
+                          fontSize: 10, letterSpacing: 1.5, textTransform: "uppercase", fontWeight: 600,
+                        }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(stockData).map(([name, data]) => (
+                      <tr key={name}
+                        onMouseEnter={() => setHoveredRow(name)}
+                        onMouseLeave={() => setHoveredRow(null)}
+                        style={{
+                          borderBottom: "1px solid rgba(255,255,255,0.04)",
+                          background: hoveredRow === name ? "rgba(255,255,255,0.03)" : name === "Figma (FIG)" ? "rgba(255,79,0,0.04)" : "transparent",
+                          transition: "background 0.15s",
+                        }}>
+                        <td style={{ padding: "14px 16px", fontWeight: 600 }}>
+                          <span style={{ color: data.color, marginRight: 8 }}>●</span>
+                          <span style={{ color: "#fff" }}>{name}</span>
+                        </td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", color: "#888", fontSize: 12 }}>{data.ipoDate}</td>
+                        <td style={{ padding: "14px 16px" }}>
+                          <span style={{
+                            padding: "3px 8px", borderRadius: 4,
+                            background: data.type === "Direct Listing" ? "rgba(29,185,84,0.1)" : "rgba(255,255,255,0.05)",
+                            color: data.type === "Direct Listing" ? "#1DB954" : "#888", fontSize: 11, fontWeight: 500,
+                          }}>{data.type}</span>
+                        </td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>{data.ipoPrice}</td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>{data.day1Close}</td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", fontSize: 12 }}>{data.peakFirstYear}</td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", fontWeight: 700, fontSize: 13 }}>
+                          <span style={{
+                            color: data.year1Return.startsWith("+") ? "#4ade80" : data.year1Return.startsWith("-") ? "#f87171" : "#e0e0e0",
+                          }}>{data.year1Return}</span>
+                        </td>
+                        <td style={{ padding: "14px 16px", fontFamily: "'JetBrains Mono', monospace", color: "#4ade80", fontSize: 12 }}>{data.revenueGrowthAtIPO}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {/* Key Insights */}
+            <div style={{
+              background: "rgba(255,255,255,0.02)", borderRadius: 12,
+              border: "1px solid rgba(255,255,255,0.06)", padding: 24,
+            }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#fff", marginBottom: 16, letterSpacing: 0.5 }}>
+                KEY OBSERVATIONS
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20 }}>
+                {[
+                  {
+                    title: "Figma's Decline Is Severe, But Not Unprecedented",
+                    body: "At -73% from day-one close (~7 months in), Figma's trajectory closely tracks Robinhood's first year (-77%). Facebook similarly lost ~53% before its recovery. The SaaS-wide selloff driven by AI disruption fears has amplified the decline beyond company-specific fundamentals.",
+                  },
+                  {
+                    title: "Strong Revenue ≠ Strong Stock Price (Near-Term)",
+                    body: "Figma's 41% revenue growth at IPO is competitive with the peer set. Facebook (32%), Spotify (39%), and Duolingo (47%) all had comparable growth but still suffered significant first-year declines. Revenue growth tends to matter more in years 2-5.",
+                  },
+                  {
+                    title: "IPO Pop-to-Trough Pattern Repeats",
+                    body: "Figma opened at $85 (2.6x IPO price), peaked at $142.92, then fell to $19.85 — a classic pattern seen with Robinhood ($38 IPO → $85 peak → $6.81 low) and Facebook ($38 IPO → $45 peak → $17.55 low). Aggressive day-one pops often precede painful corrections.",
+                  },
+                  {
+                    title: "Recovery Timelines Vary Dramatically",
+                    body: "Facebook took 16 months to recover its IPO price and went on to 10x+. Robinhood took 3+ years but eventually rallied 400% in 2024. Slack never recovered (acquired by Salesforce at $45). Instacart has traded in a narrow range near IPO price. The playbook isn't uniform.",
+                  },
+                ].map((insight) => (
+                  <div key={insight.title} style={{
+                    padding: 16, background: "rgba(255,255,255,0.02)",
+                    borderRadius: 8, border: "1px solid rgba(255,255,255,0.04)",
+                  }}>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: "#ccc", marginBottom: 8 }}>{insight.title}</div>
+                    <div style={{ fontSize: 12, color: "#777", lineHeight: 1.6 }}>{insight.body}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Footer */}
+            <div style={{
+              marginTop: 24, padding: "16px 0",
+              borderTop: "1px solid rgba(255,255,255,0.04)",
+              color: "#444", fontSize: 10, lineHeight: 1.6,
+            }}>
+              Data sourced from public markets as of Feb 26, 2026. Monthly data points are approximate month-end closing prices normalized to day-one closing price = 100.
+              Figma data reflects ~7 months of trading history. First-year returns for comparison stocks reflect full 12-month periods.
+              This analysis is for informational purposes only and does not constitute investment advice.
+            </div>
+          </div>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+</body>
+</html>
